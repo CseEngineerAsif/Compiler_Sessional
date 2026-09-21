@@ -1,0 +1,34 @@
+1. Objectives
+    1.	To understand the role of a lexical analyzer as the first phase of a compiler.
+    2.	To learn how a Flex program is organized into definitions, rules, and user code sections.
+    3.	To write regular expressions that describe keywords, identifiers, operators, operands, and symbols.
+    4.	To recognize every token in a small C-like function and display its token name.
+    5.	To observe how Flex resolves overlapping patterns using the longest-match and rule-priority principles.
+
+2. Theory
+A lexical analyzer is the first phase of a compiler. It reads the source program from left to right, character by character, and groups the characters into meaningful units called lexemes. Each lexeme is converted into a token according to a pattern that is usually written as a regular expression. The scanner also discards whitespace, reports characters that do not belong to the language, and passes the stream of tokens to the parser.
+Flex: Flex fast lexical analyzer generator reads a specification file with the extension .l and generates a C program named lex.yy.c that contains the scanning function yylex(). A Flex file has three sections separated by %%. The definitions section holds C declarations inside %{ and %} together with named patterns. The rules section holds pairs of a regular expression and a C action. The user code section holds ordinary C code such as main(). The text matched by the current rule is available in the variable yytext, and %option noyywrap removes the need to define yywrap().
+Keywords: Keywords are reserved words that have a fixed meaning in the language, such as int, if, and return. They are matched by listing the words directly as string patterns, and they cannot be used as identifier names.
+Identifiers: An identifier is a name given to a variable or function. It must begin with a letter or an underscore and may be followed by any number of letters, digits, or underscores. This is written as [a-zA-Z_][a-zA-Z0-9_]*. In the given code, compare, x, and y are identifiers.
+Operators: Operators specify an operation on operands. The code uses the relational operator ==, the assignment operator =, and the arithmetic operator +. Flex also handles the other common relational and arithmetic operators in the same way.
+Operands: Operands are the values on which operators act. They are either identifiers (x and y) or constants. An integer constant such as 1 is matched with the pattern [0-9]+, and a floating-point constant is matched with [0-9]+\.[0-9]+.
+Symbols: Symbols punctuators group or separate parts of a program. The code uses the parentheses ( and ), the braces { and }, the comma, and the semicolon; . Each of them is matched as a single-character token.
+Longest match and rule priority: Flex always chooses the rule that matches the longest possible input, and if two rules match the same length it selects the one written first. Because of the first principle, the input == is read as one relational operator instead of two assignment operators, and integer is read as one identifier instead of the keyword int followed by eger. Because of the second principle, the keyword rule is placed before the identifier rule so that the word int is reported as a keyword and not as an identifier.
+Whitespace characters space, tab, and newline only separate lexemes, so the rule for them has an empty action and produces no token. A final rule containing the dot (.) catches any other character and reports it as an unknown token. 
+
+3. Required Tools / Software
+    •	Flex (Fast Lexical Analyzer Generator)
+    •	GCC Compiler
+    •	A text editor / IDE (e.g., VS Code)
+    •	Windows with a Flex/GCC toolchain such as MinGW
+
+4. Source Code
+The following Flex program asif_32_lab3.l recognizes and displays the token name of every keyword, identifier, operator, operand, and symbol in the given code. 
+  
+5. Output
+ 
+6. Discussion
+In this experiment, a lexical analyzer was developed using Flex to recognize and classify tokens of a small C program. The program successfully identified keywords, identifiers, operators, integer constants, and symbols. Each recognized token was displayed with its corresponding token name.
+The experiment also showed the importance of rule order and the longest-match principle in Flex. Keywords were placed before the identifier rule, so words like int, if, and return were recognized correctly as keywords. Similarly, == was recognized as a single relational operator, while = was recognized as an assignment operator.
+Whitespace and newline characters were ignored using a separate rule. A final catch-all rule was also used to identify unknown characters. This provided a simple way to detect lexical errors.
+Through this experiment, the practical concepts of tokens, lexemes, patterns, regular expressions, and pattern matching were understood. Overall, the experiment demonstrated how Flex makes lexical analysis easier by allowing the programmer to define patterns and their corresponding actions.
